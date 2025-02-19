@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Giỏ hàng
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Giỏ hàng</h2>
+
+    {% if cart_items %}
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Sách</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ item.book.title }}</td>
+              <td>{{ item.book.price|floatformat:0|default_if_none:"0"|add:0 }}₫</td>
+              <td>{{ item.quantity|add:0 }}</td>
+              <td>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Xóa</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h4 class="text-end mt-3">Tổng cộng: <strong>{{ total_price|floatformat:0 }}₫</strong></h4>
+      {% comment %} <div class="text-end">
+        <a href="#" class="btn btn-success">Thanh toán</a>
+      </div> {% endcomment %}
+    {% else %}
+      <p class="text-center">Giỏ hàng của bạn đang trống.</p>
+    {% endif %}
+
+    <a href="{% url 'checkout_from_cart' %}" class="btn btn-primary">Thanh toán</a>
+  </div>
+{% endblock %}

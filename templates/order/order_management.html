@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Quản lý Đơn Hàng
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Quản lý Đơn Hàng</h2>
+    
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Khách hàng</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Ngày đặt</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer.username }}</td>
+                <td>{{ order.total_price }} VNĐ</td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <select name="status" class="form-select">
+                            {% for value, label in order.STATUS_CHOICES %}
+                                <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                </td>
+                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+                <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

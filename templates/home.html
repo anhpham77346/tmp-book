@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+  Trang chủ
+{% endblock %}
+{% block content %}
+  <h2>Chào mừng đến với cửa hàng!</h2>
+  <p>Khám phá các sản phẩm mới nhất.</p>
+  <p><a href="{% url 'book_list' %}">Xem sản phẩm</a></p>
+  <p><a href="{% url 'cart' %}">Xem giỏ hàng</a></p>
+{% endblock %}

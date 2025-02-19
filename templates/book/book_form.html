@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ form.instance.pk|default:'Thêm Sách' }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg rounded">
+          <div class="card-header bg-primary text-white text-center">
+            <h4>
+              {% if form.instance.pk %} Sửa Sách {% else %} Thêm Sách {% endif %}
+            </h4>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label for="id_title" class="form-label fw-bold">📖 Tiêu đề</label>
+                <input type="text" id="id_title" name="title" class="form-control w-100" value="{{ form.title.value|default_if_none:'' }}">
+              </div>
+
+              <div class="mb-3">
+                <label for="id_author" class="form-label fw-bold">✍️ Tác giả</label>
+                <input type="text" id="id_author" name="author" class="form-control w-100" value="{{ form.author.value|default_if_none:'' }}">
+              </div>
+
+              <div class="mb-3">
+                <label for="id_price" class="form-label fw-bold">💰 Giá</label>
+                <input type="number" id="id_price" name="price" class="form-control w-100" value="{{ form.price.value|default_if_none:'' }}">
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-save"></i> Lưu
+                </button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

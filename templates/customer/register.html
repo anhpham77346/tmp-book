@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+  Đăng ký
+{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-4">
+      <h2 class="text-center mb-4">Đăng ký</h2>
+      <form method="post" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger mt-1">{{ field.errors.as_text }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+      </form>
+      <p class="text-center mt-3">
+        Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

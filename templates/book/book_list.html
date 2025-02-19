@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Danh sách sách
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow-lg rounded">
+          <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">📚 Cửa hàng sách</h2>
+          </div>
+          <div class="card-body">
+            {% if request.user.is_staff %}
+              <div class="mb-3 text-start">
+                <a href="{% url 'book_create' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm sách mới</a>
+              </div>
+              <div class="mb-3 text-start">
+                <a href="{% url 'order_management' %}" class="btn btn-success">
+                  <i class="bi bi-list-check"></i> Quản lý đơn hàng
+                </a>
+              </div>
+            {% endif %}
+
+            <p class="fw-bold text-muted">
+              📖 Hiện có <span class="text-primary">{{ books.count }}</span> sách trong hệ thống.
+            </p>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover shadow-sm">
+                <thead class="table-dark text-center">
+                  <tr>
+                    <th>#</th>
+                    <th>📖 Tiêu đề</th>
+                    <th>✍️ Tác giả</th>
+                    <th>💰 Giá</th>
+                    <th>📅 Ngày tạo</th>
+                    <th>🛒 Mua</th>
+                    {% if request.user.is_staff %}
+                      <th>⚙️ Quản lý</th>
+                    {% endif %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for book in books %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }}</td>
+                      <td>{{ book.title }}</td>
+                      <td>{{ book.author }}</td>
+                      <td class="text-end text-success fw-bold">{{ book.price|floatformat:0|default_if_none:'0' }}₫</td>
+                      <td class="text-center text-muted">{{ book.created_at|date:'d/m/Y H:i' }}</td>
+                      <td class="text-center">
+                        <a href="{% url 'add_to_cart' book.id %}" class="btn btn-outline-success btn-sm"><i class="bi bi-cart-plus"></i> Thêm</a>
+                      </td>
+                      {% if request.user.is_staff %}
+                        <td class="text-center">
+                          <a href="{% url 'book_update' book.id %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i> Sửa</a>
+                        </td>
+                      {% endif %}
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="6" class="text-center text-muted">❌ Không có sách nào!</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
