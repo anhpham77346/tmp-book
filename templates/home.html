@@ -1,10 +1,47 @@
 {% extends 'base.html' %}
+{% load humanize %}
+
 {% block title %}
-  Trang chủ
+  Cửa hàng sách
 {% endblock %}
+
 {% block content %}
-  <h2>Chào mừng đến với cửa hàng!</h2>
-  <p>Khám phá các sản phẩm mới nhất.</p>
-  <p><a href="{% url 'book_list' %}">Xem sản phẩm</a></p>
-  <p><a href="{% url 'cart' %}">Xem giỏ hàng</a></p>
+  <div class="container mt-5">
+    <h2 class="text-center fw-bold mb-4">📚 Chào mừng đến với cửa hàng sách</h2>
+
+    {% if request.user.is_staff %}
+      <div class="d-flex justify-content-between mb-4">
+        <a href="{% url 'book_create' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm sách mới</a>
+        <a href="{% url 'order_management' %}" class="btn btn-primary"><i class="bi bi-list-check"></i> Quản lý đơn hàng</a>
+      </div>
+    {% endif %}
+
+    <p class="fw-bold text-muted text-center">
+      📖 Hiện có <span class="text-primary">{{ books.count }}</span> sách trong cửa hàng.
+    </p>
+
+    <div class="row">
+      {% for book in books %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            {% comment %} <img src="{{ book.image_url|default:'https://thepnamduong.com.vn/wp-content/uploads/woocommerce-placeholder-600x600.png' }}" class="card-img-top" alt="{{ book.title }}" /> {% endcomment %}
+
+            <div class="card-body">
+              <h5 class="card-title fw-bold">{{ book.title }}</h5>
+              <p class="card-text text-muted">✍️ {{ book.author }}</p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-success fw-bold fs-5">{{ book.price|floatformat:0|default_if_none:'0'|intcomma }}₫</span>
+                <a href="{% url 'add_to_cart' book.id %}" class="btn btn-sm btn-outline-success"><i class="bi bi-cart-plus"></i> Mua ngay</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center">
+          <p class="text-muted">❌ Hiện chưa có sách nào trong cửa hàng!</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

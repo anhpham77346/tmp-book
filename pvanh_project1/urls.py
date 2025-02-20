@@ -20,7 +20,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from customer.views import CustomerViewSet
 from cart.views import CartViewSet, CartItemViewSet
-from book.views import BookViewSet, book_list
+from book.views import BookViewSet, home
 
 router = DefaultRouter()
 router.register(r'customers', CustomerViewSet, basename='customer')
@@ -31,7 +31,7 @@ router.register(r'books', BookViewSet, basename='book')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('', book_list, name="home"),
+    path('', home, name="home"),
     path('customer/', include('customer.urls')),
     path('book/', include('book.urls')),
     path('cart/', include('cart.urls')),

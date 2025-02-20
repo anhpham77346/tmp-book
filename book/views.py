@@ -17,8 +17,10 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-# def home(request):
-#     return render(request, 'home.html')
+def home(request):
+    # books = Book.objects.all().order_by('-created_at')[:10]  # Hiển thị 10 sách mới nhất
+    books = Book.objects.all()
+    return render(request, 'home.html', {'books': books})
 
 def book_list(request):
     books = Book.objects.all()
